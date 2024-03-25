@@ -12,21 +12,21 @@ import (
 )
 
 func TestGetCheckCode(t *testing.T) {
-	code := GetCheckCode("110101200007280708")
+	code := getCheckCode("110101200007280708")
 	fmt.Println(code)
-	code = GetCheckCode("110101200007281604")
+	code = getCheckCode("110101200007281604")
 	fmt.Println(code)
-	code = GetCheckCode("110101200007286405")
+	code = getCheckCode("110101200007286405")
 	fmt.Println(code)
-	code = GetCheckCode("11010120000728010X")
+	code = getCheckCode("11010120000728010X")
 	fmt.Println(code)
-	code = GetCheckCode("110101200007281604")
+	code = getCheckCode("110101200007281604")
 	fmt.Println(code)
 }
 
 func TestRandAreaCode(t *testing.T) {
-	fmt.Println(RandAreaCode())
-	area, err := GetAreaName(RandAreaCode())
+	fmt.Println(randAreaCode())
+	area, err := getAreaName(randAreaCode())
 	fmt.Println("area", area, "err=", err)
 }
 
@@ -37,13 +37,13 @@ func TestParseData(t *testing.T) {
 }
 
 func TestRandBirthday(t *testing.T) {
-	birth := RandBirthday()
+	birth := randBirthday()
 	fmt.Println(birth)
 }
 
 func TestRandOrderCode(t *testing.T) {
 	for range 80 {
-		code := RandOrderCode()
+		code := randOrderCode()
 		fmt.Println(code)
 	}
 }
@@ -55,9 +55,12 @@ func TestRandNumber(t *testing.T) {
 	fmt.Println(res)
 }
 
+func TestRandAreaName(t *testing.T) {
+	fmt.Println(randAreaName())
+}
 func TestGenerateIdCard(t *testing.T) {
 	for range 3 {
-		id, err := GenerateIdCard(RandAreaName(), RandBirthday(), "女")
+		id, err := GenerateIdCard(randAreaName(), randBirthday(), "女")
 		fmt.Println("id=", id, "err=", err)
 		res, err1 := ParseNumber(id)
 		if err1 != nil {
@@ -66,4 +69,8 @@ func TestGenerateIdCard(t *testing.T) {
 		}
 		fmt.Println("res=", res)
 	}
+}
+
+func TestCheckIdCard(t *testing.T) {
+	fmt.Println(CheckIdCard("23000019820917136"))
 }

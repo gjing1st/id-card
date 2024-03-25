@@ -37,7 +37,7 @@ func ParseNumber(idCard string) (res ParseIdCard, err error) {
 	}
 	res.Number = idCard
 	//获取地区
-	res.Area, err = GetAreaName(idCard[:6])
+	res.Area, err = getAreaName(idCard[:6])
 	if err != nil {
 		return
 	}
@@ -49,7 +49,7 @@ func ParseNumber(idCard string) (res ParseIdCard, err error) {
 
 	res.Age = int(ageDuration.Hours() / 24 / 365)
 	//校验码是否正确
-	checkCode := GetCheckCode(idCard)
+	checkCode := getCheckCode(idCard)
 	if checkCode != string(idCard[17]) {
 		res.CheckCode = false
 	} else {
@@ -65,6 +65,29 @@ func ParseNumber(idCard string) (res ParseIdCard, err error) {
 	return
 }
 
+// CheckIdCard
+// @Description 校验身份证
+// @params
+// @contact.name GJing
+// @contact.email gjing1st@gmail.com
+// @date 2024/3/25 16:50
+func CheckIdCard(idCard string) bool {
+	// 身份证号正则表达式
+	reg := `^[1-9]\d{5}(19\d{2}|20[0-2]\d)(0[1-9]|1[0-2])([0-2][1-9]|[1-3][0-1])\d{3}([0-9]|X)$`
+	match, err1 := regexp.MatchString(reg, idCard)
+	if err1 != nil {
+		return false
+	}
+	if !match {
+		return false
+	}
+	checkCode := getCheckCode(idCard)
+	if checkCode == string(idCard[17]) {
+		return true
+	}
+	return false
+}
+
 // RandIdCard
 // @Description 随机生成身份证号码
 // @params
@@ -73,12 +96,12 @@ func ParseNumber(idCard string) (res ParseIdCard, err error) {
 // @date 2024/3/25 14:13
 func RandIdCard() (idCard string) {
 	//随机地址
-	areaCode := RandAreaCode()
-	birthday := RandBirthday()
-	orderCode := RandOrderCode()
+	areaCode := randAreaCode()
+	birthday := randBirthday()
+	orderCode := randOrderCode()
 	sexCode := rand.IntN(10)
 	idCard = areaCode + birthday + orderCode + strconv.Itoa(sexCode)
-	idCard += GetCheckCode(idCard)
+	idCard += getCheckCode(idCard)
 	return
 }
 
@@ -91,13 +114,13 @@ func RandIdCard() (idCard string) {
 // @contact.email gjing1st@gmail.com
 // @date 2024/3/25 14:28
 func GenerateIdCard(area, birthday, sex string) (idCard string, err error) {
-	areaCode, err1 := GetAreaCode(area)
+	areaCode, err1 := getAreaCode(area)
 	if err1 != nil {
 		err = err1
 		return
 	}
 	birthday = strings.Replace(birthday, "-", "", -1)
-	orderCode := RandOrderCode()
+	orderCode := randOrderCode()
 	sexCode := 0
 	sexArr := []int{0, 2, 4, 6, 8}
 	sexRandIndex := rand.IntN(5)
@@ -106,17 +129,17 @@ func GenerateIdCard(area, birthday, sex string) (idCard string, err error) {
 	}
 	sexCode = sexArr[sexRandIndex]
 	idCard = areaCode + birthday + orderCode + strconv.Itoa(sexCode)
-	idCard += GetCheckCode(idCard)
+	idCard += getCheckCode(idCard)
 	return
 }
 
-// GetCheckCode
+// getCheckCode
 // @Description 根据身份证号前17位生成最后一位校验码
 // @params
 // @contact.name GJing
 // @contact.email gjing1st@gmail.com
 // @date 2024/3/25 11:05
-func GetCheckCode(id string) (code string) {
+func getCheckCode(id string) (code string) {
 	if len(id) < 17 {
 		return
 	}
@@ -134,65 +157,65 @@ func GetCheckCode(id string) (code string) {
 	return
 }
 
-// RandAreaCode
+// randAreaCode
 // @Description 随机获取一个地区号码
 // @params
 // @contact.name GJing
 // @contact.email gjing1st@gmail.com
 // @date 2024/3/25 11:20
-func RandAreaCode() string {
+func randAreaCode() string {
 	for k := range AreaMap {
 		return k
 	}
 	return ""
 }
 
-// RandAreaName
+// randAreaName
 // @Description 随机地址
 // @params
 // @contact.name GJing
 // @contact.email gjing1st@gmail.com
 // @date 2024/3/25 14:30
-func RandAreaName() string {
+func randAreaName() string {
 	for k := range InverseAreaMap {
 		return k
 	}
 	return ""
 }
 
-// GetAreaName
+// getAreaName
 // @Description 获取地址码对应的地址
 // @params
 // @contact.name GJing
 // @contact.email gjing1st@gmail.com
 // @date 2024/3/25 14:12
-func GetAreaName(code string) (string, error) {
+func getAreaName(code string) (string, error) {
 	if v, ok := AreaMap[code]; ok {
 		return v, nil
 	}
 	return "", errors.New("地址码错误")
 }
 
-// GetAreaCode
+// getAreaCode
 // @Description 根据地址获取地址码
 // @params
 // @contact.name GJing
 // @contact.email gjing1st@gmail.com
 // @date 2024/3/25 14:18
-func GetAreaCode(name string) (string, error) {
+func getAreaCode(name string) (string, error) {
 	if v, ok := InverseAreaMap[name]; ok {
 		return v, nil
 	}
 	return "", errors.New("地址错误")
 }
 
-// RandBirthday
+// randBirthday
 // @Description 随机生成1900年1月1日至今天的某一天时间
 // @params
 // @contact.name GJing
 // @contact.email gjing1st@gmail.com
 // @date 2024/3/25 13:53
-func RandBirthday() string {
+func randBirthday() string {
 	startDate := time.Date(1900, 1, 1, 0, 0, 0, 0, time.Local)
 	now := time.Now()
 	diff := now.Sub(startDate)
@@ -201,13 +224,12 @@ func RandBirthday() string {
 	return birthday.Format("20060102")
 }
 
-// RandOrderCode
 // @Description 随机生成顺序码(不包含性别)
 // @params
 // @contact.name GJing
 // @contact.email gjing1st@gmail.com
 // @date 2024/3/25 14:12
-func RandOrderCode() string {
+func randOrderCode() string {
 	code := rand.IntN(88) + 11
 	return strconv.Itoa(code)
 }

@@ -1,7 +1,7 @@
 # 🌱 基本介绍
 ## 1.1 项目简介
 - ⚠️ 身份证号码生成器是按身份证验证规则生成虚拟身份证号，非真实身份证，仅供测试使用，请勿用于非法用途。
-- 本项目可以模拟生成二代身份证号，校验二代身份证号
+- 本项目可以模拟生成二代身份证号，校验二代身份证号;根据身份证获取地址年龄性别等
 ## 1.2 身份证号码组成
 参考[GB 11643—1999 公民身份号码](https://blog.csdn.net/chenlu5201314/article/details/90484093)
 ## 1.3 使用说明
@@ -11,3 +11,59 @@
 go get github.com/gjing1st/idcard
 ```
 
+### 随机生成身份证号
+```go
+package main
+
+import (
+	"fmt"
+	"github.com/gjing1st/id-card"
+)
+
+func main() {
+	idCard := idcard.RandIdCard()
+	fmt.Println(idCard)
+}
+```
+### 解析身份证号
+```go
+package main
+
+import (
+	"fmt"
+	"github.com/gjing1st/id-card"
+)
+
+func main() {
+	res, err := idcard.ParseNumber("210124195408204663")
+	fmt.Println(res, err)
+}
+```
+### 根据地址，出生日期，性别生成身份证号
+```go
+package main
+
+import (
+	"fmt"
+	"github.com/gjing1st/id-card"
+)
+
+func main() {
+	idCard, err := idcard.GenerateIdCard("山东省潍坊市寿光市", "20220301", "男")
+	fmt.Println(idCard, err)
+}
+```
+### 校验身份证是否正确
+
+```go
+package main
+
+import (
+	"fmt"
+)
+
+func main() {
+	fmt.Println(idcard.CheckIdCard("230000198209171361"))
+}
+
+```

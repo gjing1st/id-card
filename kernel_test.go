@@ -24,6 +24,11 @@ func TestGetCheckCode(t *testing.T) {
 	fmt.Println(code)
 }
 
+func TestGenerateIdCard2(t *testing.T) {
+	res, _ := GenerateIdCard("", "20010201", "")
+	fmt.Println(res)
+}
+
 func TestRandAreaCode(t *testing.T) {
 	fmt.Println(randAreaCode())
 	area, err := getAreaName(randAreaCode())

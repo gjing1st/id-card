@@ -114,12 +114,23 @@ func RandIdCard() (idCard string) {
 // @contact.email gjing1st@gmail.com
 // @date 2024/3/25 14:28
 func GenerateIdCard(area, birthday, sex string) (idCard string, err error) {
-	areaCode, err1 := getAreaCode(area)
-	if err1 != nil {
-		err = err1
-		return
+	var areaCode string
+	if len(area) == 0 {
+		areaCode = randAreaCode()
+	} else {
+		areaCode1, err1 := getAreaCode(area)
+		if err1 != nil {
+			err = err1
+			return
+		}
+		areaCode = areaCode1
 	}
-	birthday = strings.Replace(birthday, "-", "", -1)
+	if len(birthday) == 0 {
+		birthday = randBirthday()
+	} else {
+		birthday = strings.Replace(birthday, "-", "", -1)
+	}
+
 	orderCode := randOrderCode()
 	sexCode := 0
 	sexArr := []int{0, 2, 4, 6, 8}

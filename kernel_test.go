@@ -36,7 +36,7 @@ func TestRandAreaCode(t *testing.T) {
 }
 
 func TestParseData(t *testing.T) {
-	res, err := ParseNumber("230000198209171361")
+	res, err := ParseNumber("810104200102017726")
 	fmt.Println("err=", err)
 	fmt.Println(res)
 }
@@ -78,4 +78,9 @@ func TestGenerateIdCard(t *testing.T) {
 
 func TestCheckIdCard(t *testing.T) {
 	fmt.Println(CheckIdCard("23000019820917136"))
+}
+
+func TestGetAreaCode(t *testing.T) {
+	code, err := getAreaCode("北京市北京市西城区")
+	fmt.Println(code, err)
 }

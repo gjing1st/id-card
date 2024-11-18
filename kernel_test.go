@@ -81,6 +81,6 @@ func TestCheckIdCard(t *testing.T) {
 }
 
 func TestGetAreaCode(t *testing.T) {
-	code, err := getAreaCode("北京市北京市西城区")
-	fmt.Println(code, err)
+	a, _ := getAreaCode("北京市北京市东城区")
+	fmt.Println(a)
 }

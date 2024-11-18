@@ -6,6 +6,9 @@
 参考[GB 11643—1999 公民身份号码](https://blog.csdn.net/chenlu5201314/article/details/90484093)
 ## 1.3 使用说明
 - 本功能需要go版本>=1.22.0
+## 1.4 关于地址
+- 本项目使用`https://gitee.com/dcloud/opendb/tree/master/collection/opendb-city-china`中data.json地址，
+- 1.0.3版本地址嵌入到代码，不再从data.json读取。若地址更新，可手动在area.go中更新areaJson变量的值
 ### 安装
 ```go
 go get github.com/gjing1st/idcard

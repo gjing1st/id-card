@@ -84,3 +84,8 @@ func TestGetAreaCode(t *testing.T) {
 	a, _ := getAreaCode("北京市北京市东城区")
 	fmt.Println(a)
 }
+
+func TestOldArea(t *testing.T) {
+	name, _ := getAreaName("372321")
+	fmt.Println(name)
+}

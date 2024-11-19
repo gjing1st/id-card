@@ -34,3 +34,7 @@ func TestRandArea(t *testing.T) {
 func TestCode(t *testing.T) {
 	fmt.Println(InverseAreaMap["北京市北京市西城区"])
 }
+
+func TestAreaDataSlim(t *testing.T) {
+	areaDataSlim()
+}
